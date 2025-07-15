@@ -1,5 +1,5 @@
 from activities.activity.crud import get_activities_by_interval
-from backend.app.activities.activity_streams.crud import transform_activity_streams_hr
+from activities.activity_streams.crud import transform_activity_streams_hr
 from sqlalchemy.orm import Session
 from typing import Annotated, Callable, Optional
 import activities.activity_efforts.schema as activity_efforts_schema
@@ -28,7 +28,6 @@ def get_efforts(
         list[activity_efforts_schema.RelativeEffort]: List of relative efforts.
     """
     # Placeholder for actual implementation
-
     activities = get_activities_by_interval(
         db=db,
         user_id=user_id,
@@ -37,19 +36,18 @@ def get_efforts(
         date=date
     )
 
-    print(f"Activities: {activities}")
-
     relative_efforts = []
     for activity in activities:
 
         activity_stream_hr = db.query(activity_streams_models.ActivityStreams).filter(
             activity_streams_models.ActivityStreams.activity_id == activity.id,
             activity_streams_models.ActivityStreams.stream_type == activity_streams_constants.STREAM_TYPE_HR,
-        ).all()
+        ).first()
+
+        if not activity_stream_hr:
+            continue
 
         translated = transform_activity_streams_hr(activity_stream_hr, activity, db)
-
-        print(activity)
 
         relative_efforts.append(
             activity_efforts_schema.RelativeEffort(

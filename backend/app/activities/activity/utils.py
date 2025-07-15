@@ -916,6 +916,15 @@ def get_start_end_date_by_interval(
     elif interval == "monthly":
         start_date = date_obj.replace(day=1)
         end_date = (start_date + timedelta(days=31)).replace(day=1) - timedelta(seconds=1)  # Last day of the month
+    elif interval == "yearly":
+        start_date = date_obj.replace(month=1, day=1)
+        end_date = date_obj.replace(month=12, day=31, hour=23, minute=59, second=59)
+    elif interval == "3months":
+        start_date = date_obj.replace(month=(date_obj.month - 1) // 3 * 3 + 1, day=1)
+        end_date = (start_date + timedelta(days=90)).replace(day=1) - timedelta(seconds=1)
+    elif interval == "6months":
+        start_date = date_obj.replace(month=(date_obj.month - 1) // 6 * 6 + 1, day=1)
+        end_date = (start_date + timedelta(days=180)).replace(day=1) - timedelta(seconds=1)
     else:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,

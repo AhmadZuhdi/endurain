@@ -14,6 +14,7 @@ import activities.activity_sets.router as activity_sets_router
 import activities.activity_streams.router as activity_streams_router
 import activities.activity_workout_steps.router as activity_workout_steps_router
 import activities.activity_summaries.router as activity_summaries_router
+import activities.activity_efforts.router as activity_efforts_router
 import gears.router as gears_router
 import followers.router as followers_router
 import strava.router as strava_router
@@ -64,6 +65,11 @@ router.include_router(
         Depends(session_security.validate_access_token),
         Security(session_security.check_scopes, scopes=["profile"]),
     ],
+)
+router.include_router(
+    activity_efforts_router.router,
+    prefix=core_config.ROOT_PATH + "/activities/efforts",
+    tags=["activity_efforts"],
 )
 router.include_router(
     activities_router.router,

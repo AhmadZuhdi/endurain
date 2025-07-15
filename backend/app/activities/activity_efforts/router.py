@@ -10,7 +10,7 @@ import core.database as core_database
 
 router = APIRouter()
 
-@router.get("/activities/efforts", response_model=list[activity_efforts_schema.RelativeEffort] | None)
+@router.get("", response_model=list[activity_efforts_schema.RelativeEffort] | None)
 async def get_relative_efforts(
     db: Annotated[Session, Depends(core_database.get_db)],
     user_id: Annotated[int, Depends(session_security.get_user_id_from_access_token)],

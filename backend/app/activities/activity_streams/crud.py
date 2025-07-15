@@ -419,12 +419,12 @@ def transform_activity_streams_hr(activity_stream, activity, db):
     ]
     
     # Calculate relative effort based on time spent in each zone
-    # Zone multipliers: Zone 1=1, Zone 2=2, Zone 3=3, Zone 4=4, Zone 5=5
-    zone_multipliers = [1, 2, 3, 4, 5]
+    # Zone multipliers
+    zone_multipliers = [0.1, 0.2, 0.3, 0.4, 0.5]
     relative_effort = sum(count * multiplier for count, multiplier in zip(zone_counts, zone_multipliers))
 
     if relative_effort > 0:
-        relative_effort = round(relative_effort / 100, 0)
+        relative_effort = round(relative_effort, 0)
         activity_stream.relative_effort = relative_effort
 
     zone_percentages = [round((count / total) * 100, 2) for count in zone_counts]
