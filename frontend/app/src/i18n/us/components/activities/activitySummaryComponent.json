@@ -20,5 +20,6 @@
     "activityCalories": "Calories",
     "activityNoData": "No data",
     "errorFetchingUserById": "Error fetching user by id",
-    "errorDeletingActivity": "Error deleting activity"
+    "errorDeletingActivity": "Error deleting activity",
+    "relativeEffort": "Relative Effort"
 }

@@ -290,29 +290,29 @@ onMounted(async () => {
     try {
         if (props.activityActivityStreams && props.activityActivityStreams.length > 0) {
             // Check if the activity has the streams
-            for (let i = 0; i < props.activityActivityStreams.length; i++) {
-                if (props.activityActivityStreams[i].stream_type === 1) {
+            for (const element of props.activityActivityStreams) {
+                if (element.stream_type === 1) {
                     hrPresent.value = true;
 					// If HR zones are present, add them to the hrZones object
                     hrZones.value = props.activityActivityStreams.find(stream => stream.hr_zone_percentages).hr_zone_percentages || {};
                 }
-                if (props.activityActivityStreams[i].stream_type === 2) {
+                if (element.stream_type === 2) {
                     powerPresent.value = true;
                 }
-                if (props.activityActivityStreams[i].stream_type === 3) {
+                if (element.stream_type === 3) {
                     cadPresent.value = true;
                 }
-                if (props.activityActivityStreams[i].stream_type === 4) {
+                if (element.stream_type === 4) {
                     elePresent.value = true;
                 }
-                if (props.activityActivityStreams[i].stream_type === 5) {
+                if (element.stream_type === 5) {
                     if (
                         activityTypeIsCycling(props.activity)
                     ) {
                         velPresent.value = true;
                     }
                 }
-                if (props.activityActivityStreams[i].stream_type === 6) {
+                if (element.stream_type === 6) {
                     if (
                         activityTypeNotCycling(props.activity)
                     ) {

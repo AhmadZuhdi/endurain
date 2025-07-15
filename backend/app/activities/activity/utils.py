@@ -8,7 +8,7 @@ from zoneinfo import ZoneInfo
 
 from fastapi import HTTPException, status, UploadFile
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from urllib.parse import urlencode
 from statistics import mean
 from sqlalchemy.orm import Session
@@ -903,3 +903,23 @@ def set_activity_name_based_on_activity_type(activity_type_id: int) -> str:
 
     # If type is not 10 (Workout), return the mapping with " workout" suffix
     return mapping + " workout" if mapping != "Workout" else mapping
+
+def get_start_end_date_by_interval(
+    interval: str, date: str
+) -> tuple[datetime, datetime]:
+    """Get start and end dates based on the interval"""
+    date_obj = datetime.strptime(date, "%Y-%m-%d")
+
+    if interval == "weekly":
+        start_date = date_obj - timedelta(days=date_obj.weekday())  # Monday
+        end_date = start_date + timedelta(days=6, hours=23, minutes=59, seconds=59) # Sunday
+    elif interval == "monthly":
+        start_date = date_obj.replace(day=1)
+        end_date = (start_date + timedelta(days=31)).replace(day=1) - timedelta(seconds=1)  # Last day of the month
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid interval specified"
+        )
+
+    return start_date, end_date

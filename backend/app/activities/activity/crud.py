@@ -1,4 +1,5 @@
 from datetime import date, datetime  # Added date
+from typing import List
 from urllib.parse import unquote
 
 import activities.activity.models as activities_models
@@ -1160,6 +1161,39 @@ def delete_all_strava_activities_for_user(user_id: int, db: Session):
             f"Error in delete_all_strava_activities_for_user: {err}", "error", exc=err
         )
 
+        # Raise an HTTPException with a 500 Internal Server Error status code
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Internal Server Error",
+        ) from err
+    
+def get_activities_by_interval(
+    db: Session, 
+    user_id: int,
+    activity_type: int,
+    interval: str, 
+    date: str
+) -> List[activities_schema.Activity]:
+    """Get activities filtered by goal interval"""
+
+    try:
+        start_date, end_date = activities_utils.get_start_end_date_by_interval(interval, date)
+
+        return (
+            db.query(activities_models.Activity)
+            .filter(
+                activities_models.Activity.user_id == user_id,
+                activities_models.Activity.activity_type == activity_type,
+                activities_models.Activity.start_time >= start_date,
+                activities_models.Activity.start_time <= end_date,
+            )
+            .all()
+        )
+    except HTTPException as http_err:
+        raise http_err
+    except Exception as err:
+        # Log the exception
+        core_logger.print_to_log(f"Error in get_activities_by_interval: {err}", "error", exc=err)
         # Raise an HTTPException with a 500 Internal Server Error status code
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,

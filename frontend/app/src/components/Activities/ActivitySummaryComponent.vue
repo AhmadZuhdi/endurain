@@ -225,6 +225,15 @@
                 <span>{{ formatCalories(activity.calories) }}</span>
             </div>
         </div>
+        <div class="row d-flex mt-3">
+            <div class="col">
+                <span class="fw-lighter">
+                    {{ $t("activitySummaryComponent.relativeEffort") }}
+                </span>
+                <br>
+                <span>{{ formatSecondsToMinutes(activity.total_elapsed_time) }}</span>
+            </div>
+        </div>
     </div>
 </template>
 
