@@ -84,19 +84,21 @@ const computedChartData = computed(() => {
         lowestEffort
     ];
 
-    const activityEfforts = activityActivityEfforts.value.filter((effort, i) => toSkip.indexOf(i) === -1);
+    const activityEfforts = activityActivityEfforts.value
+        .map((effort, x) => {
+            return {
+                x,
+                y: effort.relative_effort,
+            };
+        })
+        .filter((effort, i) => toSkip.indexOf(i) === -1);
     
     return {
         labels: [],
         datasets: [
             {
                 label: t("activityMandAbovePillsComponent.labelGraphEfforts"),
-                data: activityEfforts.map((effort, i) => {
-                    return {
-                        x: i,
-                        y: effort.relative_effort
-                    };
-                }),
+                data: activityEfforts,
                 borderColor: 'rgba(75, 192, 192, 1)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 fill: true,
