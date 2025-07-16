@@ -109,7 +109,7 @@
 				:activityActivityWorkoutSteps="activityActivityWorkoutSteps"
 				:activityActivityStreams="activityActivityStreams" :units="units"
 				:activityActivityExerciseTitles="activityActivityExerciseTitles"
-				:activityActivitySets="activityActivitySets" />
+				:activityActivitySets="activityActivitySets"  />
 		</div>
 
 		<!-- back button -->

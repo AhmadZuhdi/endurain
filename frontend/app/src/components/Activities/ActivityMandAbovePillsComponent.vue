@@ -64,6 +64,9 @@
 							:barColors="getHrBarChartData(hrZones, t).barColors"
 							:datalabelsFormatter="(value) => `${Math.round(value)}%`"
 							:title="$t('activityMandAbovePillsComponent.labelHRZones')" />
+						<ActivityRelativeEffortsLineChartComponent v-if="graphSelection === 'efforts'"
+							:activityId="activity.id"
+							:activityType="activity.activity_type" />
 					</div>
 				</div>
 			</div>
@@ -93,6 +96,7 @@ import ActivityLapsComponent from "@/components/Activities/ActivityLapsComponent
 import ActivityStreamsLineChartComponent from "@/components/Activities/ActivityStreamsLineChartComponent.vue";
 import ActivityWorkoutStepsComponent from "@/components/Activities/ActivityWorkoutStepsComponent.vue";
 import BarChartComponent from '@/components/GeneralComponents/BarChartComponent.vue';
+import ActivityRelativeEffortsLineChartComponent from "@/components/Activities/ActivityRelativeEffortsLineChartComponent.vue"
 import { activityTypeIsCycling, activityTypeNotCycling, activityTypeIsSwimming } from "@/utils/activityUtils";
 // Import Notivue push
 import { push } from "notivue";
@@ -128,7 +132,7 @@ const props = defineProps({
 	activityActivitySets: {
 		type: [Object, null],
 		required: true,
-	},
+	}
 });
 
 // Composables
@@ -207,6 +211,9 @@ onMounted(async () => {
 		if (graphItems.value.length > 0) {
 			graphSelection.value = graphItems.value[0].type;
 		}
+
+		graphItems.value.push({ type: "efforts", label: `${t("activityMandAbovePillsComponent.labelGraphEfforts")}` });
+
 	} catch (error) {
 		// If there is an error, set the error message and show the error alert.
 		push.error(
